@@ -1,25 +1,36 @@
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import { Route, Switch, Redirect, BrowserRouter } from "react-router-dom";
+import { ThemeProvider } from "@emotion/react";
+import { defaultTheme, ThemeModeContextProvider } from "@useui/react";
+import { routerRoutes } from "./config";
+//Components
+import AppLayout from "./components/AppLayout";
+import ElementsPreviewScreen from "./screens/ElementsPreviewScreen";
+import HeroScreen from "./screens/HeroScreen";
+import ArticleScreen from "./screens/ArticleScreen";
+import TestScreen from "./screens/TestScreen";
 
-function App() {
+const App = () => {
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <ThemeModeContextProvider>
+        <ThemeProvider theme={defaultTheme}>
+          <BrowserRouter>
+            <AppLayout>
+              <Switch>
+                <Route path={routerRoutes.test.path} component={TestScreen} />
+                <Route path={routerRoutes.elementsPreview.path} component={ElementsPreviewScreen} />
+                <Route path={routerRoutes.hero.path} component={HeroScreen} />
+                <Route path={routerRoutes.article.path} component={ArticleScreen} />
+                <Redirect from="/home" to={routerRoutes.hero.path} />
+                <Redirect from="/" to={routerRoutes.hero.path} />
+              </Switch>
+            </AppLayout>
+          </BrowserRouter>
+        </ThemeProvider>
+      </ThemeModeContextProvider>
     </div>
   );
-}
+};
 
 export default App;
